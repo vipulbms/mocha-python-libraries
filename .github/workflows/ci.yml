@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "feature/**"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test:
+    name: "Test — ${{ matrix.package }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - mocha_python_audit
+          - mocha_python_logging
+          - mocha_python_ai
+          - mocha_python_agent
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package + dev dependencies
+        run: |
+          pip install -e "packages/${{ matrix.package }}[dev]"
+
+      - name: Lint (ruff)
+        run: |
+          ruff check packages/${{ matrix.package }}/ --select E,F,W
+
+      - name: Type-check (mypy)
+        run: |
+          mypy packages/${{ matrix.package }}/src --ignore-missing-imports --check-untyped-defs
+        continue-on-error: true   # informational until stubs are complete
+
+      - name: Run tests (pytest)
+        run: |
+          pytest packages/${{ matrix.package }}/tests/ -v --tb=short

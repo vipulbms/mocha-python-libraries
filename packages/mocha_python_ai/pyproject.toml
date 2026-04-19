@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mocha-python-ai"
+version = "0.1.0"
+description = "Mocha AI utilities (LLM client, prompt helpers)"
+requires-python = ">=3.11"
+readme = "README.md"
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.4", "mypy>=1.10"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mocha_python_ai"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

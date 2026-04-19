@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mocha-python-agent"
+version = "0.1.0"
+description = "Mocha agent infrastructure (A2A protocol, agent cards, task bus)"
+requires-python = ">=3.11"
+readme = "README.md"
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.4", "mypy>=1.10"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mocha_python_agent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
